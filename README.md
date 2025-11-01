@@ -192,19 +192,21 @@ GPL-3
 If you use this package in your research, please cite:
 
 ```
-[Your citation information here]
+Chan, LK (2025) FuzzyDelphiR  [Computer software]. Retrieved from https://lerlerchan.github.io/FuzzyDelphiR/
+
+The jamovi project (2025). jamovi. (Version 2.6) [Computer Software]. Retrieved from https://www.jamovi.org.
 ```
 
 ## References
 
 For more information on the Fuzzy Delphi Method:
-- Cheng, C. H., & Lin, Y. (2002). Evaluating the best main battle tank using fuzzy decision theory with linguistic criteria evaluation. European Journal of Operational Research, 142(1), 174-186.
-- Murray, T. J., Pipino, L. L., & Van Gigch, J. P. (1985). A pilot study of fuzzy set modification of Delphi. Human Systems Management, 5(1), 76-80.
+Md Jani, Noraniza & Zakaria, Mohd & Maksom, Zulisman & Shariff, Md & Mustapha, Ramlan. (2018). Consequences of Customer Engagement in Social Networking Sites : Employing Fuzzy Delphi Technique for Validation. International Journal of Advanced Computer Science and Applications. 9. 10.14569/IJACSA.2018.090938
+
+N. A. M. Saffie, N. M. Shukor and K. A. Rasmani, "Fuzzy delphi method: Issues and challenges," 2016 International Conference on Logistics, Informatics and Service Sciences (LISS), Sydney, NSW, Australia, 2016, pp. 1-7, doi: 10.1109/LISS.2016.7854490
 
 ## Author
 
-[Your Name]
-[Your Email]
+Chan Ler-Kuan (lkchan@sc.edu.my)
 
 ## Contributing
 
