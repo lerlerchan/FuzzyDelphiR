@@ -1,0 +1,18 @@
+Package: FuzzyDelphiR
+Type: Package
+Title: Fuzzy Delphi Method Analysis
+Version: 1.0.0
+Authors@R: person("Your", "Name", email = "your.email@example.com", role = c("aut", "cre"))
+Description: Implements the Fuzzy Delphi Method for expert consensus analysis.
+    Converts Likert scale responses to fuzzy triangular numbers, calculates fuzzy
+    distance, determines expert consensus, performs defuzzification, and ranks items.
+    Supports both 5-point and 7-point Likert scales.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.0
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Depends: R (>= 3.5.0)

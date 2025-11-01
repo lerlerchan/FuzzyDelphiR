@@ -1,0 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^create_data\.R$
+^data/expert_data\.R$
+^README\.Rmd$

@@ -1,0 +1,351 @@
+---
+title: "Introduction to FuzzyDelphiR"
+author: "FuzzyDelphiR Package"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to FuzzyDelphiR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+The Fuzzy Delphi Method (FDM) is a research technique used to achieve expert consensus on a particular topic. Unlike the traditional Delphi method, FDM uses fuzzy set theory to handle the uncertainty and vagueness inherent in expert opinions.
+
+The **FuzzyDelphiR** package provides a complete implementation of the Fuzzy Delphi Method for R users.
+
+## What is the Fuzzy Delphi Method?
+
+The Fuzzy Delphi Method combines:
+
+1. **Delphi Method**: A structured communication technique for gathering expert opinions
+2. **Fuzzy Set Theory**: Mathematical framework for dealing with imprecise information
+
+### Key Advantages
+
+- Single round of data collection (vs. multiple rounds in traditional Delphi)
+- Handles uncertainty in expert responses
+- Provides quantitative measures of consensus
+- Ranks items based on expert agreement
+
+## Installation
+
+```{r eval=FALSE}
+# Install from source
+devtools::install("path/to/FuzzyDelphiR")
+
+# Load the package
+library(FuzzyDelphiR)
+```
+
+## Basic Workflow
+
+### Step 1: Prepare Your Data
+
+Your data should have:
+- Rows representing experts/respondents
+- Columns representing items/questions
+- Values as Likert scale responses (1-5 or 1-7)
+
+```{r eval=FALSE}
+# Example data structure
+expert_data <- data.frame(
+  Item1 = c(5, 4, 5, 5, 4),
+  Item2 = c(4, 5, 4, 5, 5),
+  Item3 = c(3, 4, 3, 4, 3)
+)
+```
+
+### Step 2: Run the Analysis
+
+```{r eval=FALSE}
+# Complete analysis in one function call
+results <- fuzzy_delphi(expert_data, likert_scale = 5)
+
+# View results
+print(results)
+```
+
+### Step 3: Interpret Results
+
+The output includes:
+
+- **Overall d-construct**: Average fuzzy distance (lower is better)
+- **Overall consensus**: Percentage of experts in agreement
+- **Item d-values**: Agreement level for each item
+- **Rankings**: Items ranked by importance/agreement
+
+## Detailed Example
+
+Let's walk through a complete example using the included sample dataset.
+
+### Load Sample Data
+
+```{r eval=FALSE}
+# Load the package sample data
+data(expert_data)
+
+# View the data structure
+dim(expert_data)  # 27 experts, 10 items
+head(expert_data, 3)
+```
+
+### Perform Analysis
+
+```{r eval=FALSE}
+# Run Fuzzy Delphi analysis
+results <- fuzzy_delphi(expert_data, likert_scale = 5, consensus_threshold = 0.2)
+
+# Print overall results
+print(results)
+```
+
+### Understanding the Output
+
+```{r eval=FALSE}
+# Overall construct values
+cat("Overall d-construct:", results$overall_d_construct, "\n")
+cat("Overall consensus:", results$overall_consensus, "%\n")
+
+# Item-level details
+cat("\nItem d-values:\n")
+print(results$item_d_values)
+
+cat("\nItem rankings:\n")
+print(results$ranking)
+```
+
+**Interpretation:**
+
+- **d-construct ≤ 0.2**: Excellent consensus achieved
+- **Consensus ≥ 75%**: Strong expert agreement
+- **Lower rank number**: Higher priority/importance
+
+### Detailed Summary
+
+```{r eval=FALSE}
+# Get comprehensive summary
+summary(results)
+```
+
+## Step-by-Step Analysis
+
+For more control, you can run each step individually:
+
+### 1. Convert to Fuzzy Numbers
+
+```{r eval=FALSE}
+# Convert Likert-5 responses to fuzzy triangular numbers
+fuzzy_data <- likert5_to_fuzzy(expert_data)
+
+# Each item now has three fuzzy values (m1, m2, m3)
+head(fuzzy_data[, 1:6], 3)  # First 2 items (6 columns total)
+```
+
+### 2. Calculate Fuzzy Scale
+
+```{r eval=FALSE}
+# Calculate fuzzy distance for each expert-item pair
+fuzzy_scale <- calculate_fuzzy_scale(fuzzy_data)
+
+# View fuzzy distances
+head(fuzzy_scale, 3)
+
+# Average d-value per item
+colMeans(fuzzy_scale)
+```
+
+### 3. Assess Consensus
+
+```{r eval=FALSE}
+# Calculate consensus percentage (d ≤ 0.2)
+consensus <- calculate_consensus(fuzzy_scale, threshold = 0.2)
+
+# View consensus percentages
+print(consensus)
+```
+
+### 4. Defuzzification
+
+```{r eval=FALSE}
+# Convert fuzzy numbers back to crisp values
+defuzz_values <- defuzzify(fuzzy_data)
+
+# View defuzzified values
+print(defuzz_values)
+```
+
+### 5. Rank Items
+
+```{r eval=FALSE}
+# Rank items based on defuzzified values
+rankings <- rank_items(defuzz_values)
+
+# View rankings (1 = highest ranked)
+print(rankings)
+```
+
+## Exporting Results
+
+### Export to CSV
+
+```{r eval=FALSE}
+# Export all results to CSV files
+export_results(results, output_dir = "output", prefix = "my_study")
+
+# This creates multiple files:
+# - my_study_fuzzy_scale.csv
+# - my_study_item_summary.csv
+# - my_study_overall_results.csv
+# - my_study_defuzzification.csv
+# - my_study_rankings.csv
+```
+
+### Generate Report
+
+```{r eval=FALSE}
+# Generate a formatted text report
+generate_report(results, output_file = "fuzzy_delphi_report.txt")
+
+# Or print to console
+generate_report(results)
+```
+
+## Working with Likert-7 Scale
+
+The package also supports 7-point Likert scales:
+
+```{r eval=FALSE}
+# Example Likert-7 data
+likert7_data <- data.frame(
+  Item1 = c(7, 6, 7, 6, 7),
+  Item2 = c(6, 7, 6, 7, 6),
+  Item3 = c(5, 6, 5, 6, 5)
+)
+
+# Convert using Likert-7 function
+fuzzy_data_7 <- likert7_to_fuzzy(likert7_data)
+
+# Or use the main function with likert_scale = 7
+results_7 <- fuzzy_delphi(likert7_data, likert_scale = 7)
+```
+
+## Consensus Thresholds
+
+You can adjust the consensus threshold (default = 0.2):
+
+```{r eval=FALSE}
+# Stricter threshold (more conservative)
+results_strict <- fuzzy_delphi(expert_data, consensus_threshold = 0.15)
+
+# More lenient threshold
+results_lenient <- fuzzy_delphi(expert_data, consensus_threshold = 0.25)
+```
+
+## Interpretation Guidelines
+
+### d-value Ranges
+
+| d-value | Interpretation |
+|---------|----------------|
+| ≤ 0.2   | Excellent agreement - Consensus achieved |
+| 0.2-0.5 | Moderate agreement - Consider additional rounds |
+| > 0.5   | Low agreement - Further investigation needed |
+
+### Consensus Percentage
+
+| Percentage | Interpretation |
+|------------|----------------|
+| ≥ 75%      | Strong consensus |
+| 50-75%     | Moderate consensus |
+| < 50%      | Weak consensus |
+
+### Combined Criteria
+
+For an item to be accepted, typically both conditions should be met:
+- **d-value ≤ 0.2** AND
+- **Consensus ≥ 75%**
+
+## Practical Tips
+
+1. **Sample Size**: Aim for at least 10-30 experts for reliable results
+2. **Data Quality**: Remove incomplete responses before analysis
+3. **Threshold Selection**: Use 0.2 as standard, adjust based on your field
+4. **Multiple Rounds**: If consensus is not achieved, consider traditional Delphi rounds
+5. **Item Refinement**: Items with low consensus may need clarification or removal
+
+## Example: Complete Analysis
+
+Here's a complete workflow from data preparation to reporting:
+
+```{r eval=FALSE}
+library(FuzzyDelphiR)
+
+# 1. Load your data
+my_data <- read.csv("expert_responses.csv")
+
+# 2. Check data structure
+str(my_data)
+summary(my_data)
+
+# 3. Run analysis
+results <- fuzzy_delphi(
+  data = my_data,
+  likert_scale = 5,
+  consensus_threshold = 0.2
+)
+
+# 4. View results
+print(results)
+summary(results)
+
+# 5. Export results
+export_results(results, output_dir = "results", prefix = "study_2024")
+
+# 6. Generate report
+generate_report(results, output_file = "results/final_report.txt")
+
+# 7. Identify items that achieved consensus
+item_summary <- data.frame(
+  Item = names(results$item_d_values),
+  d_value = as.numeric(results$item_d_values),
+  consensus_pct = as.numeric(results$consensus_percentage)
+)
+
+# Filter items with good consensus
+accepted_items <- subset(item_summary, d_value <= 0.2 & consensus_pct >= 75)
+print(accepted_items)
+```
+
+## References
+
+1. Cheng, C. H., & Lin, Y. (2002). Evaluating the best main battle tank using fuzzy decision theory with linguistic criteria evaluation. *European Journal of Operational Research*, 142(1), 174-186.
+
+2. Murray, T. J., Pipino, L. L., & Van Gigch, J. P. (1985). A pilot study of fuzzy set modification of Delphi. *Human Systems Management*, 5(1), 76-80.
+
+## Getting Help
+
+For more information:
+
+```{r eval=FALSE}
+# Function help
+?fuzzy_delphi
+?calculate_fuzzy_scale
+
+# Package overview
+help(package = "FuzzyDelphiR")
+```
+
+## Conclusion
+
+The FuzzyDelphiR package provides a complete, easy-to-use implementation of the Fuzzy Delphi Method. It streamlines the process from raw Likert scale data to final consensus determination and item ranking.
+
+For questions or issues, please contact the package maintainer or submit an issue on GitHub.
