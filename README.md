@@ -192,7 +192,7 @@ GPL-3
 If you use this package in your research, please cite:
 
 ```
-Chan, LK (2025) FuzzyDelphiR  [Computer software]. Retrieved from https://lerlerchan.github.io/FuzzyDelphiR/
+Chan, LK (2025) FuzzyDelphiR  [R library]. Retrieved from https://lerlerchan.github.io/FuzzyDelphiR/
 
 The jamovi project (2025). jamovi. (Version 2.6) [Computer Software]. Retrieved from https://www.jamovi.org.
 ```
